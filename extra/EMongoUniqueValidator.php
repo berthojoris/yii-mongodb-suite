@@ -21,18 +21,19 @@ class EMongoUniqueValidator extends CValidator
 	public function validateAttribute($object, $attribute)
 	{
 		$value = $object->{$attribute};
-		if ($this->allowEmpty && ($value === null || $value === ''))
+		if($this->allowEmpty && ($value === null || $value === ''))
 			return;
 
 		$criteria = new EMongoCriteria;
-		if (!$object->getIsNewRecord())
-			$criteria->addCond('_id', '!=', $object->getPrimaryKey());
-		$criteria->addCond($attribute, '==', $value);
-		$count = $object->model()->count($criteria);
+		$criteria->{$attribute} = $value;
+        	$criteria->addCond('_id', '!=', $object->_id);
+		$count = $object->count($criteria);
 
-		if ($count !== 0)
+		if($count !== 0)
 			$this->addError(
-					$object, $attribute, Yii::t('yii', '{attribute} is not unique in DB.')
+				$object,
+				$attribute,
+				Yii::t('yii', '{attribute} is not unique in DB.')
 			);
 	}
 
