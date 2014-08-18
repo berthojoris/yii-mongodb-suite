@@ -86,7 +86,7 @@ for your database in the components section, and add the following to the file:
         'safeFlag'         => true,
         'useCursor'        => false
       ),
-    ),
+),
 ```
 
 - ConnectionString: 'localhost' should be changed to the ip or hostname of your host being connected to. For example
@@ -100,22 +100,20 @@ for your database in the components section, and add the following to the file:
 That's all you have to do for setup. You can use it very much like the active record.
 For example:
 
-~~~
-[php]
-    $client = new Client();
-    $client->first_name='something';
-    $client->save();
-    $clients = Client::model()->findAll();
-~~~
+```php
+$client = new Client();
+$client->first_name='something';
+$client->save();
+$clients = Client::model()->findAll();
+```
 
 
 ## Basic Usage
 
 Just define following model:
 
-~~~
-[php]
-    class User extends EMongoDocument
+```php
+class User extends EMongoDocument
     {
       public $login;
       public $name;
@@ -152,8 +150,8 @@ Just define following model:
           'pass'   => 'Password',
         );
       }
-    }
-~~~
+}
+```
 
 And that's it! Now start using this User model class like standard Yii AR model.
 
@@ -169,9 +167,8 @@ NOTE: Embedded documents should not have a static model() method!
 So if you have a User.php model, and an UserAddress.php model which is the embedded document.
 Lest assume we have following embedded document:
 
-~~~
-[php]
-    class UserAddress extends EMongoEmbeddedDocument
+```php
+class UserAddress extends EMongoEmbeddedDocument
     {
       public $city;
       public $street;
@@ -193,14 +190,13 @@ Lest assume we have following embedded document:
           'zip'=>'Postal Code',
         );
       }
-    }
-~~~
+}
+```
 
 Now we can add this method to our User model from previous section:
 
-~~~
-[php]
-    class User extends EMongoDocument {
+```php
+class User extends EMongoDocument {
       ...
 
       public function embeddedDocuments()
@@ -212,17 +208,16 @@ Now we can add this method to our User model from previous section:
       }
 
       ...
-    }
-~~~
+}
+```
 
 And using it is as easy as π!
 
-~~~
-[php]
-    $client = new Client;
-    $client->address->city='New York';
-    $client->save();
-~~~
+```php
+$client = new Client;
+$client->address->city='New York';
+$client->save();
+```
 
 This will automatically call validation for the model and all its embedded documents.
 You can even nest embedded documents in embedded documents, just define embeddedDocuments() method with array of another embedded documents.
