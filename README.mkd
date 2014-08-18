@@ -114,7 +114,7 @@ Just define following model:
 
 ```php
 class User extends EMongoDocument
-    {
+{
       public $login;
       public $name;
       public $pass;
@@ -169,7 +169,7 @@ Lest assume we have following embedded document:
 
 ```php
 class UserAddress extends EMongoEmbeddedDocument
-    {
+{
       public $city;
       public $street;
       public $house;
@@ -236,9 +236,8 @@ You easily can store arrays in DB!
 - there is no way (that i know) where i can easily provide mechanism for this, you have to write Your own
 - This is how I accomplish it for now:
 
-~~~
-[php]
-    // add a property for your array of embedded documents
+```php
+// add a property for your array of embedded documents
     public $addresses;
 
     // add EmbeddedArraysBehavior
@@ -252,63 +251,59 @@ You easily can store arrays in DB!
         ),
       );
     }
-~~~
+```
 
 So for the user, if you want them to be able to save multiple addresses, you can do this:
 
-~~~
-[php]
-    $c = new Client;
-    $c->addresses[0] = new ClientAddress;
-    $c->addresses[0]->city='NY';
-    $c->save(); // behavior will handle validation of array too
-~~~
-
+```php
+$c = new Client;
+$c->addresses[0] = new ClientAddress;
+$c->addresses[0]->city='NY';
+$c->save(); // behavior will handle validation of array too
+```
 or
 
-~~~
-[php]
-    $c = Client::model()->find();
-    foreach($c->addresses as $addr)
-    {
-        echo $addr->city;
-    }
-~~~
+```php
+$c = Client::model()->find();
+foreach($c->addresses as $addr)
+{
+  echo $addr->city;
+}
+```
 
 
 ## Querying
 
 This is one of the things that makes this extension great. It's very easy to query for the objects you want.
 
-~~~
-[php]
-    // simple find first. just like normal AR.
-    $object = ModelClass::model()->find()
-~~~
+```php
+// simple find first. just like normal AR.
+$object = ModelClass::model()->find()
+```
+
 
 Now suppose you want to only retrieve users, that have a status of 1 (active). There is an object just for that, making queries easy.
 
-~~~
-[php]
-    $c = new EMongoCriteria;
-    $c->status('==', 1);
-    $users = ModelClass::model->findAll($c);
-~~~
+```php
+$c = new EMongoCriteria;
+$c->status('==', 1);
+$users = ModelClass::model->findAll($c);
+```
+
 
 and now $users will be an array of all users with the status key in their document set to 1. This is a good way to list only active users.
 What's that? You only want to show the 10 most recent activated users? Thats easy too.
 
-~~~
-[php]
-    $c = new EMongoCriteria;
-    $c->active('==', 1)->limit(10);
+```php
+$c = new EMongoCriteria;
+$c->active('==', 1)->limit(10);
 
-    $users = ModelClass::model->findAll($c);
-~~~
+$users = ModelClass::model->findAll($c);
+```
 
 It's that easy. In place of the 'equals' key, you can use any of the following operators:
 
-~~~
+```php
     - 'greater'   | >
     - 'greaterEq' | >=
     - 'less'      | <
@@ -324,15 +319,14 @@ It's that easy. In place of the 'equals' key, you can use any of the following o
     - 'mod'       | %
     - 'equals'    | ==
     - 'where'     | // JavaScript operator
-~~~
+```
 
 *NOTICE: the $or operator in newer versions of mongodb does NOT work with this extension yet. We will add it to the list above when it is fixed. Newer versions of MongoDB will work, just not the $or operator.
 For examples and use for how to use these operators effectively, use the [MongoDB Operators Documentation here](http://www.mongodb.org/display/DOCS/Advanced+Queries).
 
 Here are a few more examples for using criteria:
 
-~~~
-[php]
+```php
     // first you must create a new criteria object
     $criteria = new EMongoCriteria;
 
@@ -364,29 +358,27 @@ Here are a few more examples for using criteria:
     // You can even use the where operator with javascript like so:
     $criteria->fieldName('where', ' expression in javascript ie: this.field > this.field2');
     // but remember that this kind of query is a bit slower than normal finds.
-~~~
+```
 
 
 ### Regexp / SQL LIKE Replacemt
 
 You can use native PHP Mongo driver class MongoRegex, to query:
 
-~~~
-[php]
+```php
     // Create criteria
     $criteria = new EMongoCriteria;
     // Find all records witch have first name starring on a, b and c, case insensitive search
     $criteria->first_name = new MongoRegex('/[abc].*/i');
     $clients = Client::model()->findAll($criteria);
     // see phpdoc for MongoRegex class for more examples
-~~~
+```
 
 for reference on how to use query array see: http://www.php.net/manual/en/mongocollection.find.php
 
 ### Creating Criteria Objects From Arrays
 
-~~~
-[php]
+```php
     // Example criteria
     $array = array(
         'conditions'=>array(
@@ -402,7 +394,7 @@ for reference on how to use query array see: http://www.php.net/manual/en/mongoc
     $criteria = new EMongoCriteria($array);
     // or
     $clients = ClientModel::model()->findAll($array);
-~~~
+```
 
 ## Known bugs
 
