@@ -71,9 +71,8 @@ The current version is 1.4.
 In your protected/config/main.php config file. Comment out (or delete) the current 'db' array
 for your database in the components section, and add the following to the file:
 
-~~~
-[php]
-    'import' => array(
+```php
+'import' => array(
       ...
       'ext.YiiMongoDbSuite.*',
     ),
@@ -88,7 +87,7 @@ for your database in the components section, and add the following to the file:
         'useCursor'        => false
       ),
     ),
-~~~
+```
 
 - ConnectionString: 'localhost' should be changed to the ip or hostname of your host being connected to. For example
   if connecting to a server it might be `'connectionString' => 'mongodb://username@xxx.xx.xx.xx'` where xx.xx.xx.xx is
